@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript">
+		function save_options() {
+			localStorage["base_url"] = document.getElementById('input_base_url').value;
+			var status = document.getElementById('statusx');
+			status.innerText = 'Options saved.';
+			status.textContent = 'Options saved.';
+			setTimeout(function() {
+				status.innerText = '';
+				status.textContent = '';
+			}, 750);
+		}
+		
+		function load_options() {
+			var v = localStorage["base_url"];
+			if(defined(v)) {
+				document.getElementById('input_base_url').value = v;
+			}
+		}
+	</script>
+</head>
+<body onload="load_options();">
+		<div>
+		Base URL: <input type="text" id="input_base_url" value="http://localhost:4000" />
+		<button onclick="save_options();">Save</button>
+		</div>
+	<span id="statusx"></span>
+</body>

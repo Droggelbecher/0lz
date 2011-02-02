@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="/static/bookmarks.xslt" ?>
+<bookmark-listing>
+	<tags>
+		{%- for t in tags %}
+		<tag><name>{{ t }}</name></tag>
+		{%- endfor %}
+	</tags>
+	<bookmarks>
+		{%- for bookmark in bookmarks %}
+		<bookmark>
+			<id>{{ bookmark.id }}</id>
+			<title>{{ bookmark.title }}</title>
+			<url>{{ bookmark.url }}</url>
+			<tags>
+				{%- for t in bookmark.tags %}
+				<tag><name>{{ t }}</name></tag>
+				{%- endfor %}
+			</tags>
+		</bookmark>
+		{%- endfor %}
+	</bookmarks>
+</bookmark-listing>

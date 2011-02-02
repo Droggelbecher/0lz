@@ -1,0 +1,22 @@
+{#- vim: set ft=jinja: #}
+{
+	"tags": [
+		{%- set c = joiner(',') %}
+		{%- for tag in tags %}
+			{{ c() }} { "name": "{{ tag }}" }
+		{%- endfor %}
+	],
+	"bookmark_count": {{ bookmark_count }},
+	"subtags": [
+		{%- set c = joiner(',') %}
+		{%- for d in subtags %}
+			{{ c() }} 
+			{ 
+				"name": "{{ d.name }}",
+				"bookmark_count": {{ d.bookmark_count }},
+				"tags_url": "{{ d.tags_url }}",
+				"bookmarks_url": "{{ d.bookmarks_url }}"
+			}
+		{%- endfor %}
+	]
+}

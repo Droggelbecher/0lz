@@ -1,0 +1,14 @@
+{
+	"name": "My First Extension",
+	"version": "1.0",
+	"description": "The first extension that I made.",
+	"browser_action": {
+		"default_icon": "add.png",
+		"popup": "add.html"
+	},
+	"options_page": "options.html",
+	"permissions": [
+		"http://localhost:4000/",
+		"tabs"
+	]
+}

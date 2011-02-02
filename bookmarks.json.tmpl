@@ -1,0 +1,28 @@
+{#- vim: set ft=jinja: #}
+{
+	"tags": [
+		{%- set c = joiner(',') %}
+		{%- for tag in tags %}
+			{{ c() }} { "name": "{{ tag }}" }
+		{%- endfor %}
+	],
+	"bookmarks": [
+		{%- set c = joiner(',') %}
+		{%- for bookmark in bookmarks %}
+			{{ c() }} {
+				"id": {{ bookmark.id }},
+				"title": "{{ bookmark.title }}",
+				"url": "{{ bookmark.url }}",
+				"tags": [
+					{%- set cc = joiner(',') %}
+					{%- for t in bookmark.tags %}
+						{%- if t not in tags %}
+						{{ cc() }} { "name": "{{ t }}" }
+						{%- endif %}
+					{%- endfor %}
+				]
+			}
+		{%- endfor %}
+	]
+}
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="/static/subtags.xslt" ?>
+<tag-listing>
+	<tags>
+		{%- for t in tags %}
+		<tag>
+			<name>{{ t }}</name>
+		</tag>
+		{%- endfor %}
+	</tags>
+	<bookmark-count>{{ bookmark_count }}</bookmark-count>
+	<subtags>
+		{%- for st in subtags %}
+		<tag>
+			<name>{{ st.name }}</name>
+			<bookmark-count>{{ st.bookmark_count }}</bookmark-count>
+			<tags-url>{{ st.tags_url }}</tags-url>
+			<bookmarks-url>{{ st.bookmarks_url }}</bookmarks-url>
+		</tag>
+		{%- endfor %}
+	</subtags>
+</tag-listing>

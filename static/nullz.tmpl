@@ -1,0 +1,43 @@
+<html>
+<head>
+	<script type="text/javascript">
+	<!--
+	var max_bookmarks = 50;
+	var tags = new Array();
+	
+	function add_tag(t) {
+		tags.push(t);
+		tags.sort();
+		update();
+	}
+	
+	function remove_tag(t) {
+		var new_tags = new Array();
+		for(var i=0; i<tags.length; i++) {
+			if(tags[i] != t) {
+				new_tags.push(t);
+			}
+		}
+		update();
+	}
+	
+	function clear_bookmarks() {
+		var bm = getElementById("bookmarks");
+		bm.clear();
+	}
+	
+	function add_bookmark(url, tags) {
+		
+	}
+	//-->
+	</script>
+</head>
+<body>
+	<div class="navigation">
+		<ul id="tags">
+		</ul>
+	</div>
+	<div class="content">
+		<ul id="bookmarks">
+		</ul>
+</body>

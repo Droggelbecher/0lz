@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript" src="utils.js"></script>
+	<script type="text/javascript">
+	function fill_inputs() {
+		chrome.tabs.getSelected(null, on_tab_known);
+	}
+
+	function on_tab_known(tab) {
+		document.getElementById('input_title').value = tab.title || tab.url;
+		document.getElementById('input_url').value = tab.url;
+	}
+
+	function submit() {
+		var ts = document.getElementById('input_tags').value
+		ts.replace(/,/, " ");
+		ts.replace(/  /, " ");
+		var tags = ts.split(" ");
+		var request_url = localStorage["base_url"];
+		if(!request_url) {
+			request_url = "http://localhost:4000";
+		}
+		var request_url = request_url + '/_json/bookmarks/';
+		for(var i in tags) {
+			request_url = request_url + tags[i] + '/';
+		}
+		var form = document.getElementById('form');
+		form.action = request_url;
+		form.method = 'post';
+		//form.submit();
+		request(
+			request_url,
+			function(response, userdata) {
+				//alert("response=" + response);
+				window.close();
+			},
+			0, 'POST',
+			'action=add&title=' + $('input_title').value +
+			'&url=' + $('input_url').value +
+			'&quickmark=' + $('input_quickmark').value
+		);
+	}
+		
+	</script>
+</head>
+<body onload="fill_inputs();">
+	<form id="form">
+		<input class="hidden" type="hidden" name="action" value="add" />
+		<p>
+			<label for="input_title">Title</label> <input class="text" type="text" name="title" id="input_title" />
+		</p>
+		<p>
+			<label for="input_url">URL</label> <input class="text" type="text" name="url" id="input_url" />
+		</p>
+		<p>
+			<label for="input_url">Tags</label>
+			<input class="text" type="text" name="tags" id="input_tags" />
+		</p>
+		<p>
+			<label for="input_url">Quickmark</label>
+			<input class="text" type="text" name="quickmark" id="input_quickmark" />
+		</p>
+	</form>
+	<button onclick="submit();">Add</button>
+</body>
+</html>

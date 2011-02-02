@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/style.css">
+	<script type="text/javascript" src="/static/utils.js"></script>
+	<script type="text/javascript">
+	<!--
+	var host = 'http://localhost:4000';
+	
+	var max_bookmarks = 10;
+	var tags = new Array();
+	var subtags = new Array();
+	var subtags_old = new Array();
+	
+	function request_subtags() {
+		request('/_json/tags/' + tags2path(tags), on_subtags_update);
+	}
+
+	function request_bookmarks(tag) {
+		request('/_json/bookmarks/' + tags2path(tags, tag), on_bookmarks_update, tag);
+	}
+
+	function delete_bookmark(id) {
+		request(
+			host + '/_json/bookmark/' + id,
+			function(response, userdata) {
+				request_subtags();
+			},
+			0, 'POST',
+			'action=delete'
+		);
+	}
+
+	function refresh_html() {
+		clear_node($('tags'));
+		for(var i=0; i<tags.length; i++) {
+			var li = document.createElement('li');
+			var li_a = document.createElement('a');
+			li.appendChild(li_a);
+			li_a.href = "javascript:remove_tag_nr(" + i + ");";
+			set_text(li_a, tags[i]);
+			$('tags').appendChild(li);
+		}
+		
+		for(var i=0; i<subtags_old.length; i++) {
+			var keep = false;
+			for(var j=0; j<subtags.length; j++) {
+				if(subtags_old[i].name == subtags[j].name) {
+					keep = true;
+					break;
+				}
+			}
+			if(!keep) {
+				$('subtag_bookmarks').removeChild($('bookmarks_' + subtags_old[i].name).parentNode);
+			}
+		}
+	}
+
+	function update_tags(data) {
+		tags = new Array();
+		for(var i=0; i<data.tags.length; i++) {
+			tags.push(data.tags[i].name);
+		}
+		tags.sort();
+	}
+
+	function add_tag(t) {
+		tags.push(t);
+		request_subtags();
+	}
+
+	function remove_tag_nr(i) {
+		tags.splice(i, 1);
+		request_subtags();
+	}
+
+	function on_subtags_update(data, userdata) {
+		update_tags(data);
+		subtags_old = new Array();
+		subtags_old = subtags;
+		subtags = new Array();
+		
+		for(var i=0; i<data.subtags.length; i++) {
+			subtags.push(data.subtags[i]);
+		}
+		subtags.sort();
+		
+		request_bookmarks('');
+		
+		for(var i=0; i<subtags.length; i++) {
+			var li_ul = $('bookmarks_' + subtags[i].name);
+			
+			if(li_ul == null) {
+				var li = document.createElement('li');
+				var li_a = document.createElement('a'); li.appendChild(li_a);
+				li_a.href = "javascript:add_tag('" + subtags[i].name + "');";
+				set_text(li_a, '' + subtags[i].name + ' (' + subtags[i].bookmark_count + ')');
+				$('subtag_bookmarks').appendChild(li);
+				
+				//if(subtags[i].bookmark_count <= max_bookmarks) {
+				li_ul = document.createElement('ul'); li.appendChild(li_ul);
+				li_ul.id = 'bookmarks_' + subtags[i].name;
+			}
+			var li_a = li_ul.parentNode.firstChild;
+			set_text(li_a, '' + subtags[i].name + ' (' + subtags[i].bookmark_count + ')');
+			request_bookmarks(subtags[i].name);
+		}
+		
+		refresh_html();
+	}
+	
+	function on_bookmarks_update(data, userdata) {
+		var ul = $('bookmarks_' + userdata);
+		clear_node(ul);
+		for(var i=0; i<data.bookmarks.length; i++) {
+			var bm = data.bookmarks[i];
+			if(userdata == '' && bm.tags.length > 0) {
+				continue;
+			}
+		
+			var li = document.createElement('li');
+			ul.appendChild(li);
+			
+			var li_a = document.createElement('a'); li.appendChild(li_a);
+			li_a.href = bm.url;
+			set_text(li_a, bm.title || bm.url);
+			
+			var li_del = document.createElement('a'); li_a.appendChild(li_del);
+			li_del.href = 'javascript:delete_bookmark(' + bm.id + ')';
+			li_del.class = 'delete';
+			li_del.setAttribute("class", "delete");
+			//set_text(li_del, "x");
+		}
+	}
+
+	//-->
+	</script>
+</head>
+
+<body onload="request_subtags();">
+	<div id='request_state' class='done' />
+	
+	<div class="navigation">
+		<ul id="tags">
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+	<div class="content">
+		<ul id="bookmarks_">
+		</ul>
+		<div class="clearfix"></div>
+		<ul id="subtag_bookmarks">
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8">
+<bookmarks>
+	<tags>
+		{%- for t in tags %}
+		<tag>{{ t }}</tag>
+		{%- endfor %}
+	</tags>
+	<bookmark-groups>
+		{%- for g in bookmark_groups %}
+		<bookmark-group>
+			<tag>{{ g.tag }}</tag>
+			<bookmarks>
+				{%- for bookmark in g.bookmarks %}
+				<bookmark>
+					<id>{{ bookmark.id }}</id>
+					<title>{{ bookmark.title }}</title>
+					<url>{{ bookmark.url }}</url>
+				</bookmark>
+				{%- endfor %}
+			</bookmarks>
+		</bookmark-group>
+		{%- endfor %}
+	</bookmark-groups>
+</bookmarks>
