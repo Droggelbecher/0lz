@@ -21,14 +21,9 @@ function request(url, on_success, userdata, method, data) {
 	}
 	
 	xmlhttp.open(method, url, true);
-	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	if(data) {
-		xmlhttp.setRequestHeader("Content-length", data.length);
-	}
-	xmlhttp.setRequestHeader("Connection", "close");
-	xmlhttp.setRequestHeader("If-Modified-Since", "");
-	xmlhttp.setRequestHeader("If-None-Match", "");
 	xmlhttp.onreadystatechange = function() {
+		//alert("x");
+		//alert("readystate=" + xmlhttp.readyState + " httpstatus=" + xmlhttp.status);
 		if(xmlhttp.readyState != 4) {
 			$('request_state').className = 'loading';
 		}
@@ -40,6 +35,14 @@ function request(url, on_success, userdata, method, data) {
 			$('request_state').className = 'done';
 		}
 	}
+	
+	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	if(data) {
+		xmlhttp.setRequestHeader("Content-length", data.length);
+	}
+	xmlhttp.setRequestHeader("Connection", "close");
+	//xmlhttp.setRequestHeader("If-Modified-Since", "");
+	//xmlhttp.setRequestHeader("If-None-Match", "");
 	xmlhttp.send(data);
 }
 
@@ -48,7 +51,7 @@ function tags2path(ts, t) {
 	for(var i in ts) {
 		s += ts[i] + '/';
 	}
-	if(t != null) {
+	if(t != null && t != "") {
 		s += t + '/';
 	}
 	return s;

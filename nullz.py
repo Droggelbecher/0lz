@@ -10,7 +10,6 @@ from werkzeug.wsgi import ClosingIterator
 
 #import jinja
 
-#from database import Database
 from db import Database
 import controllers
 from dispatch import get_adapter, local, local_manager

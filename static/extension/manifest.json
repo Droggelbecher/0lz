@@ -1,5 +1,5 @@
 {
-	"name": "My First Extension",
+	"name": "0lz",
 	"version": "1.0",
 	"description": "The first extension that I made.",
 	"browser_action": {
@@ -8,7 +8,7 @@
 	},
 	"options_page": "options.html",
 	"permissions": [
-		"http://localhost:4000/",
+		"http://*/*",
 		"tabs"
 	]
 }

@@ -27,14 +27,13 @@
 		for(var i in tags) {
 			request_url = request_url + tags[i] + '/';
 		}
-		var form = document.getElementById('form');
-		form.action = request_url;
-		form.method = 'post';
+		//var form = document.getElementById('form');
+		//form.action = request_url;
+		//form.method = 'post';
 		//form.submit();
 		request(
 			request_url,
 			function(response, userdata) {
-				//alert("response=" + response);
 				window.close();
 			},
 			0, 'POST',

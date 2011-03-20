@@ -2,15 +2,22 @@
 # -*- coding: utf-8 -*-
 
 from frontend import render
-from database import Bookmark
 from dispatch import expose, url_for, set2path, local, local_manager
 from werkzeug import redirect, Response
 from werkzeug.exceptions import NotFound
 
 app = local('application')
 
+@expose('/', with_api=False)
+def root(request):
+	return redirect('/static/browse.html')
+
 @expose('/<quickmark>', with_api=False)
 def get_quickmark(request, quickmark):
+	print "quickmark=[" + quickmark +"]"
+	if quickmark == '':
+		return redirect('/static/browse.html')
+	
 	bm = tuple(app.db.get_bookmarks(quickmark = quickmark))
 	if not len(bm):
 		raise NotFound
@@ -47,7 +54,7 @@ def edit_bookmarks(request, api, tags):
 		app.db.update(b)
 		return render('status', api,
 			status = 'acknowledged',
-			force_plain = True,
+			#force_plain = True,
 			operation = 'add',
 			subject = 'bookmark',
 			detail_id = '',        # <- TODO
@@ -55,10 +62,23 @@ def edit_bookmarks(request, api, tags):
 			detail_title = b['title']
 		)
 
+@expose('/bookmarks', methods=('GET',))
+@expose('/bookmarks/', methods=('GET',))
+def get_all_bookmarks(request, api):
+	print "foo"
+	bookmarks = list(app.db.get_bookmarks())
+	bookmarks.sort()
+	return render('bookmarks', api,
+		tags = [],
+		bookmarks = bookmarks,
+	)
+	
+
 @expose('/bookmarks/<path:tags>', methods=('GET',))
 def get_bookmarks(request, api, tags):
 	"""
 	"""
+	print "bar"
 	tags = list(set((x for x in tags.split('/') if x)))
 	tags.sort()
 	bookmarks = list(app.db.get_bookmarks(tags=tags))

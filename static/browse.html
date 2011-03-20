@@ -68,13 +68,19 @@
 	function add_tag(t) {
 		tags.push(t);
 		request_subtags();
+		request_bookmarks('');
 	}
 
 	function remove_tag_nr(i) {
 		tags.splice(i, 1);
+		request_bookmarks('');
 		request_subtags();
 	}
 
+	/**
+	 * Called when a new list of subtags is available
+	 * from the server.
+	 */
 	function on_subtags_update(data, userdata) {
 		update_tags(data);
 		subtags_old = new Array();
@@ -85,8 +91,6 @@
 			subtags.push(data.subtags[i]);
 		}
 		subtags.sort();
-		
-		request_bookmarks('');
 		
 		for(var i=0; i<subtags.length; i++) {
 			var li_ul = $('bookmarks_' + subtags[i].name);
@@ -110,7 +114,12 @@
 		refresh_html();
 	}
 	
+	/**
+	 * Called when new bookmarks for the subtag named by userdata is available
+	 * from the server.
+	 */
 	function on_bookmarks_update(data, userdata) {
+		//alert("on_bookmarks_update:" +  userdata + ".");
 		var ul = $('bookmarks_' + userdata);
 		clear_node(ul);
 		for(var i=0; i<data.bookmarks.length; i++) {
